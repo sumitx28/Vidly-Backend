@@ -7,21 +7,18 @@ const genres = [
   { id: 3, name: 'Romance' },
 ];
 
-router.get('/genres', (req, res) => {
+router.get('/', (req, res) => {
   res.send(genres);
 });
 
-router.get('/genres/:id', (req, res) => {
-  const { error } = validateGenre(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
+router.get('/:id', (req, res) => {
   const genre = genres.find((g) => g.id == req.params.id);
   if (!genre) return res.status(404).send('Genre not found');
 
   res.send(genre);
 });
 
-router.put('/genres/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   const genre = genres.find((g) => g.id == req.params.id);
   if (!genre) return res.status(404).send('Genre not found');
 
@@ -33,7 +30,7 @@ router.put('/genres/:id', (req, res) => {
   res.send(genre);
 });
 
-router.post('/genres', (req, res) => {
+router.post('/', (req, res) => {
   const { error } = validateGenre(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -47,7 +44,7 @@ router.post('/genres', (req, res) => {
   res.send(genre);
 });
 
-router.delete('/genres/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
   const genre = genres.find((g) => g.id == req.params.id);
 
   if (!genre) return res.status(404).send('Genre not found');
