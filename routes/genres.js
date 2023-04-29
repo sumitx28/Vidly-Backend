@@ -1,19 +1,24 @@
 const router = require('express').Router();
-const Joi = require('joi');
-const Genre = require('../db/models/genres');
+const { Genre, validate } = require('../db/models/genres');
 
 router.get('/', async (req, res) => {
   try {
     const genres = await Genre.find({}).sort('name');
-    res.send(genres);
+    return res.send(genres);
   } catch (err) {
-    res.status(500).send(err);
+    console.log(err);
+    return res.status(500).send(err);
   }
 });
 
 router.get('/:id', async (req, res) => {
+  if (req.params.id.length != 24) return res.status(404).send('Invalid ID');
   try {
     const genre = await Genre.findById(req.params.id);
+
+    if (!genre)
+      return res.status(404).send('Genre with the given ID not found...');
+
     return res.send(genre);
   } catch (err) {
     return res.status(404).send(err);
@@ -21,20 +26,23 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  const { error } = validateGenre(req.body);
+  if (req.params.id.length != 24) return res.status(404).send('Invalid ID');
+
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const genre = await Genre.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
 
-  if (!genre) return res.status(404).send('Genre not found');
+  if (!genre)
+    return res.status(404).send('Genre with the given ID not found...');
 
   res.send(genre);
 });
 
 router.post('/', async (req, res) => {
-  const { error } = validateGenre(req.body);
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const genre = new Genre({
@@ -50,19 +58,14 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
+  if (req.params.id.length != 24) return res.status(404).send('Invalid ID');
+
   const genre = await Genre.findByIdAndDelete(req.params.id);
 
-  if (!genre) return res.status(404).send('Genre not found');
+  if (!genre)
+    return res.status(404).send('Genre with the given ID does not exist...');
 
   res.send(genre);
 });
-
-function validateGenre(genre) {
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-  });
-
-  return schema.validate(genre);
-}
 
 module.exports = router;
