@@ -29,5 +29,6 @@ function validateCustomer(customer) {
   return schema.validate(customer);
 }
 
+module.exports.customerSchema = customerSchema;
 module.exports.Customer = Customer;
 module.exports.validate = validateCustomer;
