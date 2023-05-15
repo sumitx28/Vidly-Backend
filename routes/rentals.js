@@ -3,6 +3,7 @@ const { Movie } = require('../db/models/movies');
 const { Genre } = require('../db/models/genres');
 const { Customer } = require('../db/models/customers');
 const { Rental, validateRental } = require('../db/models/rentals');
+const mongoose = require('mongoose');
 
 router.get('/', async (req, res) => {
   const rentals = await Rental.find().sort('-dateOut');
