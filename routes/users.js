@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const { User, validateUser } = require("../db/models/users");
 const _ = require("lodash");
+const jwt = require("jsonwebtoken");
 
 router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
@@ -16,7 +17,10 @@ router.post("/", async (req, res) => {
   user = new User(req.body);
   user = await user.save();
 
-  res.send(_.pick(user, ["_id", "name", "email"]));
+  const token = user.generateAuthToken();
+  res
+    .header("x-auth-token", token)
+    .send(_.pick(user, ["_id", "name", "email"]));
 });
 
 module.exports = router;
