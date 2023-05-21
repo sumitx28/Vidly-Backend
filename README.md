@@ -1,17 +1,14 @@
-
 # Vidly Backend
+
 Vidly is a movie rental service. This project contains the backend required to serve these services.
-
-
 
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`MONGODB_URL`
+`MONGODB_CONNECTION_URL`
 
 `JWT_SECRET_KEY`
-
 
 ## Run Locally
 
@@ -39,9 +36,7 @@ Start the server
   npm start
 ```
 
-
 ## API Reference
-
 
 #### Users
 
@@ -64,11 +59,11 @@ Start the server
   GET /api/genres
   GET /api/genres/:id
 
-  ### Authentication Required 
+  ### Authentication Required
   POST /api/genres
   PUT /api/genres/:id
 
-  ### Require Admin Privileges 
+  ### Require Admin Privileges
   DELETE /api/genres/:id
 ```
 
@@ -79,11 +74,11 @@ Start the server
   GET /api/customers
   GET /api/customers/:id
 
-  ### Authentication Required 
+  ### Authentication Required
   POST /api/customers
   PUT /api/customers/:id
 
-  ### Require Admin Privileges 
+  ### Require Admin Privileges
   DELETE /api/customers/:id
 ```
 
@@ -94,11 +89,11 @@ Start the server
   GET /api/movies
   GET /api/movies/:id
 
-  ### Authentication Required 
+  ### Authentication Required
   POST /api/movies
   PUT /api/movies/:id
 
-  ### Require Admin Privileges 
+  ### Require Admin Privileges
   DELETE /api/movies/:id
 ```
 
@@ -108,9 +103,10 @@ Start the server
   ### Public
   GET /api/rentals
 
-  ### Authentication Required 
+  ### Authentication Required
   POST /api/rentals
 ```
+
 ## Key takeaways
 
 - Project Setup with Node, Express, and MongoDB.
@@ -121,6 +117,7 @@ Start the server
 - Database design and implementation.
 
 In summary, the lessons learned include setting up projects using Node, Express, and MongoDB, understanding the structure and implementation of REST APIs, emphasizing project organization and clean coding practices, implementing authentication and authorization mechanisms, utilizing middlewares effectively, and gaining knowledge in database design and implementation.
+
 ## Tech Stack
 
 <div align="center">
@@ -134,8 +131,6 @@ In summary, the lessons learned include setting up projects using Node, Express,
 	<code><img height="50" src="https://user-images.githubusercontent.com/25181517/182884177-d48a8579-2cd0-447a-b9a6-ffc7cb02560e.png" alt="mongoDB" title="mongoDB"/></code>
 </div>
 
-
 ## Feedback
 
 If you have any feedback, please reach out to me at savaliyasumit717@gmail.com
-
