@@ -1,18 +1,20 @@
-const router = require('express').Router();
-const { Customer, validate } = require('../db/models/customers');
+const router = require("express").Router();
+const { Customer, validate } = require("../db/models/customers");
+const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
-router.get('/', async (req, res) => {
-  const customers = await Customer.find({}).sort('name');
+router.get("/", async (req, res) => {
+  const customers = await Customer.find({}).sort("name");
   res.send(customers);
 });
 
-router.get('/:id', async (req, res) => {
-  if (req.params.id.length != 24) return res.status(404).send('Invalid ID');
+router.get("/:id", async (req, res) => {
+  if (req.params.id.length != 24) return res.status(404).send("Invalid ID");
   try {
     const customer = await Customer.findById(req.params.id);
 
     if (!customer)
-      return res.status(404).send('Customer with the given ID not found...');
+      return res.status(404).send("Customer with the given ID not found...");
 
     return res.send(customer);
   } catch (err) {
@@ -20,7 +22,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -33,8 +35,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
-  if (req.params.id.length != 24) return res.status(404).send('Invalid ID');
+router.put("/:id", auth, async (req, res) => {
+  if (req.params.id.length != 24) return res.status(404).send("Invalid ID");
 
   const { error } = validate(req.body);
   if (error) res.status(400).send(error.details[0].message);
@@ -46,7 +48,7 @@ router.put('/:id', async (req, res) => {
       { new: true }
     );
 
-    if (!updatedCustomer) return res.status(404).send('Customer not found');
+    if (!updatedCustomer) return res.status(404).send("Customer not found");
 
     return res.send(updatedCustomer);
   } catch (err) {
@@ -54,12 +56,12 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
   try {
-    if (req.params.id.length != 24) return res.status(404).send('Invalid ID');
+    if (req.params.id.length != 24) return res.status(404).send("Invalid ID");
 
     const deletedCustomer = await Customer.findByIdAndDelete(req.params.id);
-    if (!deletedCustomer) return res.status(404).send('Customer not found');
+    if (!deletedCustomer) return res.status(404).send("Customer not found");
 
     return res.send(deletedCustomer);
   } catch (err) {
