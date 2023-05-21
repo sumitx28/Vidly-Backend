@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { Movie, validateMovie } = require("../db/models/movies");
 const { Genre } = require("../db/models/genres");
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 router.get("/", async (req, res) => {
   const movies = await Movie.find().sort("title");
@@ -54,7 +55,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(movie);
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
   if (req.params.id.length != 24) return res.status(400).send("Invalid Id");
 
   const movie = await Movie.findByIdAndRemove(req.params.id);

@@ -1,0 +1,11 @@
+const jwt = require("jsonwebtoken");
+
+module.exports = function (req, res, next) {
+  // 401 = Unauthorized
+  // 403 = Forbidden
+  if (req.user.isAdmin) {
+    next();
+  } else {
+    return res.status(403).send("Access Denied");
+  }
+};

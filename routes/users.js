@@ -1,8 +1,13 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const { User, validateUser } = require("../db/models/users");
+const auth = require("../middleware/auth");
 const _ = require("lodash");
-const jwt = require("jsonwebtoken");
+
+router.get("/me", auth, async (req, res) => {
+  const user = await User.findById(req.user._id);
+  res.send(_.pick(user, ["name", "email", "_id"]));
+});
 
 router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
